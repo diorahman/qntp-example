@@ -16,6 +16,6 @@ void NtpTest::run()
 
 void NtpTest::onReplyReceived(QHostAddress host, quint16 port, NtpReply reply)
 {
-    qDebug() << reply.referenceTime();
-    qDebug() << reply.originTime();
+    qDebug() << "reference time:" << reply.referenceTime();
+    qDebug() << "origin time:" << reply.originTime();
 }
