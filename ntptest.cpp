@@ -1,5 +1,9 @@
 #include "ntptest.h"
 #include <QDebug>
+#include <sys/time.h>
+
+#define CET (+1)
+#define DST ()
 
 NtpTest::NtpTest(QObject *parent) :
     QObject(parent)
@@ -23,6 +27,10 @@ void NtpTest::onReplyReceived(QHostAddress host, quint16 port, NtpReply reply)
 {
     qDebug() << "reference time:" << reply.referenceTime();
     qDebug() << "origin time:" << reply.originTime();
+    qDebug() << "destination time:" << reply.destinationTime();
+    qDebug() << "transmit time:" << reply.transmitTime();
+    qDebug() << "receive time:" << reply.receiveTime();
+    aggiornaOra(reply.transmitTime().toTime_t());
 }
 
 void NtpTest::lookedUp(const QHostInfo &host)
@@ -36,4 +44,21 @@ void NtpTest::lookedUp(const QHostInfo &host)
         qDebug() << "Found address:" << address.toString();
         m_client->sendRequest(address, 123);
     }
+}
+
+void NtpTest::aggiornaOra(qint64 ora_s){
+    struct timeval temp;
+    temp.tv_sec = ora_s;
+    temp.tv_usec=0;
+
+    struct tm *pt = 0;
+    pt = new tm;
+
+    settimeofday(&temp, 0);
+    system("/sbin/hwclock -wu");        /* Update RTC from system */
+}
+
+void NtpTest::isDST(qint64 ora_s){
+    struct tm *pt = qmtime(&ora_s);
+    if (pt->tm_wday ==
 }

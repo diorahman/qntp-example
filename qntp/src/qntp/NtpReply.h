@@ -71,27 +71,27 @@ public:
   qreal precision() const;
 
   /**
-   * @returns                        Time when the system clock was last set or corrected.
+   * @returns Time when the system clock was last set or corrected.
    */
   QDateTime referenceTime() const;
 
   /**
-   * @returns                        Time at the client when the request departed for the server.
+   * @returns Time at the client when the request departed for the server.
    */
   QDateTime originTime() const;
 
   /**
-   * @returns                        Time at the server when the request arrived from the client.
+   * @returns Time at the server when the request arrived from the client.
    */
   QDateTime receiveTime() const;
 
   /**
-   * @returns                        Time at the server when the response left for the client.
+   * @returns Time at the server when the response left for the client.
    */
   QDateTime transmitTime() const;
 
   /**
-   * @returns                        Time at the client when the reply arrived from the server.
+   * @returns Time at the client when the reply arrived from the server.
    */
   QDateTime destinationTime() const;
 
