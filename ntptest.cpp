@@ -14,8 +14,26 @@ void NtpTest::run()
     m_client->sendRequest(QHostAddress("17.82.254.14"), 123);
 }
 
+void NtpTest::run(QString servName)
+{
+    QHostInfo::lookupHost(servName, this, SLOT(lookedUp(QHostInfo)));
+}
+
 void NtpTest::onReplyReceived(QHostAddress host, quint16 port, NtpReply reply)
 {
     qDebug() << "reference time:" << reply.referenceTime();
     qDebug() << "origin time:" << reply.originTime();
+}
+
+void NtpTest::lookedUp(const QHostInfo &host)
+{
+    if (host.error() != QHostInfo::NoError) {
+        qDebug() << "Cannot resolve URL:" << host.errorString();
+        return;
+    }
+
+    foreach (const QHostAddress &address, host.addresses()){
+        qDebug() << "Found address:" << address.toString();
+        m_client->sendRequest(address, 123);
+    }
 }
