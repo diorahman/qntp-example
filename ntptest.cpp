@@ -87,17 +87,10 @@ bool NtpTest::isDST(time_t ora_s){
             return false;
     }
 
-<<<<<<< HEAD
     if ((pt->tm_mon < MAR) || (pt->tm_mon > OCT))   //winter, from November to February, isn't DST
         return false;
 
     if ((pt->tm_mon > MAR) || (pt->tm_mon < OCT))   //summer, from April to Septemper, is DST
-=======
-    if ((pt->tm_mon < MAR) || (pt->tm_mon > OCT))   //winter, from November to February
-        return false;
-
-    if ((pt->tm_mon > MAR) || (pt->tm_mon < OCT))   //summer, from April to Septemper
->>>>>>> 9de13b1b12bb366980c2be499f84c1e30e529b3b
         return true;
 
     return false;

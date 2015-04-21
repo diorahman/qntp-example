@@ -13,11 +13,7 @@
  * ntp <url> <timezone>
  *  send a NTP request to the url passed as argument. The URL can
  *  be wrote both as IP address or as host name. The timezone has
-<<<<<<< HEAD
  *  to be wrote as [+12; -14] integer number.
-=======
- *  to be wrote as +12 <> -14 integer number.
->>>>>>> 9de13b1b12bb366980c2be499f84c1e30e529b3b
  * @param argc
  * @param argv
  * @return
