@@ -3,29 +3,15 @@
 #include <QCoreApplication>
 #include <QStringList>
 #include <sys/time.h>
+#include "param.h"
 
-#define DEBUG_LEVEL 2   //0=no, 1=to qDebug(), 2=to log file and qDebug()
-
-#if DEBUG_LEVEL==0
-    #define debugC(x) ;     //info
-#endif
-
-#if DEBUG_LEVEL==1
-    #define debugC(x) qDebug() << x   //info
-#endif
-
-#if DEBUG_LEVEL==2
-#include <QFile>
-#define debug_path "/local/root/log/logNtp.txt"
-#define debugC(x) {QFile fileLog(debug_path); fileLog.open(QIODevice::Append | QIODevice::Text); QTextStream(&fileLog) << x << "\n"; qDebug() << x;}
-#endif
 
 NtpTest::NtpTest(int timeZone, QObject *parent) :
     QObject(parent),
     m_timeZone(timeZone*3600),
     m_timer(0)
 {
-    debugC("start Npt");
+    util::debug(QString("start Npt. Timezone %1").arg(timeZone));
     m_client = new NtpClient(this);
     connect(m_client, SIGNAL(replyReceived(QHostAddress,quint16,NtpReply)), this, SLOT(onReplyReceived(QHostAddress,quint16,NtpReply)));
     m_timer = new QTimer();
@@ -34,7 +20,7 @@ NtpTest::NtpTest(int timeZone, QObject *parent) :
 }
 
 void NtpTest::timeEnd(){
-    debugC("Terminated for timeout.");
+    util::debug("Terminated for timeout.");
     qApp->quit();
 }
 
@@ -45,7 +31,7 @@ void NtpTest::run()
     m_timer->start();
 }
 
-void NtpTest::run(QString servName)
+void NtpTest::run(const QString servName)
 {
     bool isIP;
     //check if the servName is an IP address
@@ -63,11 +49,13 @@ void NtpTest::run(QString servName)
 
     if (isIP){
         m_client->sendRequest(QHostAddress(servName), 123);
-        debugC("Send request to IP " << servName);
+        util::debug("Send request to IP ");
+        util::debug(servName.toStdString().c_str());
     }
     else{
         QHostInfo::lookupHost(servName, this, SLOT(lookedUp(QHostInfo)));
-        debugC("Lookup host for url " << servName);
+        util::debug("Lookup host for url ");
+        util::debug(servName.toStdString().c_str());
     }
     m_timer->start();
 }
@@ -79,7 +67,8 @@ void NtpTest::onReplyReceived(QHostAddress host, quint16 port, NtpReply reply)
 
     m_timer->stop();
     updateTime(reply.transmitTime().toTime_t());
-    debugC("Updated" << reply.transmitTime().toString());
+    util::debug("Updated");
+    util::debug(reply.transmitTime().toString().toStdString().c_str());
 
     qApp->quit();
 }
@@ -88,12 +77,14 @@ void NtpTest::lookedUp(const QHostInfo &host)
 {
     m_timer->stop();
     if (host.error() != QHostInfo::NoError) {
-        debugC("Cannot resolve URL:" << host.errorString());
+        util::debug("Cannot resolve URL:");
+        util::debug(host.errorString().toStdString().c_str());
         qApp->quit();
     }
 
     foreach (const QHostAddress &address, host.addresses()){
-        debugC("Found address:" << address.toString());
+        util::debug("Found address:");
+        util::debug(address.toString().toStdString().c_str());
         m_client->sendRequest(address, 123);
         m_timer->start();
     }

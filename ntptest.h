@@ -44,7 +44,7 @@ public:
      * DNS servers.
      * @param servName Name of the NTP server (both IP or url)
      */
-    void run(QString servName);
+    void run(const QString servName);
 
     /**
      * @brief Ask for a default server reply.
