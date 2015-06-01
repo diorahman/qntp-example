@@ -18,7 +18,11 @@ include (qntp/qntp.pri)
 
 
 SOURCES += main.cpp \
-    ntptest.cpp
+    ntptest.cpp \
+    param.cpp
 
 HEADERS += \
-    ntptest.h
+    ntptest.h \
+    param.h
+
+DEFINES += GIT_CURRENT_SHA1="\\\"$(shell C:/Progra~2/Git/bin/git -C "$$_PRO_FILE_PWD_" describe --abbrev=4 --dirty --always --tags)\\\""
