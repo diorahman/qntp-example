@@ -9,7 +9,7 @@
  *
  * QNtp is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License 
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -21,7 +21,7 @@
 NtpReply::NtpReply(): d(new NtpReplyPrivate()) {
   /* We don't use shared null because NtpReplyPrivate isn't a POD type and
    * allocation overhead is negligible here. */
-  qMemSet(&d->packet, 0, sizeof(d->packet));
+  memset(&d->packet, 0, sizeof(d->packet));
 }
 
 NtpReply::NtpReply(NtpReplyPrivate *dd): d(dd) {
@@ -37,7 +37,7 @@ NtpReply &NtpReply::operator=(const NtpReply &other) {
 
   return *this;
 }
-  
+
 NtpLeapIndicator NtpReply::leapIndicator() const {
   return static_cast<NtpLeapIndicator>(d->packet.basic.flags.leapIndicator);
 }

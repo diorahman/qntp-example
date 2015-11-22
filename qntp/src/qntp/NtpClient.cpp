@@ -9,7 +9,7 @@
  *
  * QNtp is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License 
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -46,7 +46,7 @@ bool NtpClient::sendRequest(const QHostAddress &address, quint16 port) {
 
   /* Initialize the NTP packet. */
   NtpPacket packet;
-  qMemSet(&packet, 0, sizeof(packet));
+  memset(&packet, 0, sizeof(packet));
   packet.flags.mode = ClientMode;
   packet.flags.versionNumber = 4;
   packet.transmitTimestamp = NtpTimestamp::fromDateTime(QDateTime::currentDateTimeUtc());
@@ -61,7 +61,7 @@ bool NtpClient::sendRequest(const QHostAddress &address, quint16 port) {
 void NtpClient::readPendingDatagrams() {
   while (mSocket->hasPendingDatagrams()) {
     NtpFullPacket packet;
-    qMemSet(&packet, 0, sizeof(packet));
+    memset(&packet, 0, sizeof(packet));
 
     QHostAddress address;
     quint16 port;
@@ -79,6 +79,6 @@ void NtpClient::readPendingDatagrams() {
 
     /* Notify. */
     Q_EMIT replyReceived(address, port, reply);
-  }  
+  }
 }
 
